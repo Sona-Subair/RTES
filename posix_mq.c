@@ -53,7 +53,6 @@ void *sender(void *parameter)
 
   if(mymq == -1)
     perror("mq_open");
-    printf("messade size%d",sizeof(canned_msg));
 
   /* send message with priority=30 */
   if((nbytes = mq_send(mymq, canned_msg, sizeof(canned_msg), 30)) == -1)
@@ -108,23 +107,13 @@ void *sender(void *parameter)
     perror("pthread_create");
     printf("ret=%d\n", ret);
   }  
-  else
-  {
-    printf("\n\rSender Thread Created with id=%d\n\r", ret);
-  }
 
   if((ret=pthread_create(&reciever_thread, &receiver_attr, receiver, NULL)) != 0)
 {
-perror("\n\r Failed Making Reciever Thread\n\r");
+printf("\n\r Failed Making Reciever Thread\n\r");
 printf("ret=%d\n", ret);
 }
-  else
-{
-printf("\n\r Receiver Thread Created with ret=%d\n\r", ret);
-}
-  printf("pthread join send\n");
   pthread_join(sender_thread, NULL);
 
-  printf("pthread join receive\n");
   pthread_join(reciever_thread, NULL);
   }
